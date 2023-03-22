@@ -26,17 +26,17 @@ namespace Crud.Controllers
             //{
             //    ModelState.AddModelError("CustomError", "The Display Order cannot exactly match the Name.");
             //}
-            Person personList = new Person();
-            if (ModelState.IsValid)
-            {
-                //person.Insert()
-                //_db.Categories.Add(obj);
-                //_db.SaveChanges();
-                //TempData["success"] = "Category created successfully";
-                return RedirectToAction("Index");
-            }
+            //Person personList = new Person();
+            //if (ModelState.IsValid)
+            //{
+            //    //person.Insert()
+            //    //_db.Categories.Add(obj);
+            //    //_db.SaveChanges();
+            //    //TempData["success"] = "Category created successfully";
+            //    return RedirectToAction("Index");
+            //}
 
-            return View(personList.Retrieve());
+            return View();
         }
 
         //[HttpPost]
