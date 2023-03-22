@@ -67,7 +67,7 @@ namespace Crud.Models
             {
                 persons.Add(new Person() { ID = (int)obj[0], FName = obj[1].ToString(), MName = obj[2].ToString(), LName = obj[3].ToString() });
             }
-            //return a value
+
             return persons;
         }
         public void Insert(string ID, string fname, string mname, string lname)
