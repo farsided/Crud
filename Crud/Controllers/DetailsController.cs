@@ -18,5 +18,33 @@ namespace Crud.Controllers
 
             return View(personList.Retrieve());
         }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            //if (person.FName == obj.DisplayOrder.ToString())
+            //{
+            //    ModelState.AddModelError("CustomError", "The Display Order cannot exactly match the Name.");
+            //}
+            Person personList = new Person();
+            if (ModelState.IsValid)
+            {
+                //person.Insert()
+                //_db.Categories.Add(obj);
+                //_db.SaveChanges();
+                //TempData["success"] = "Category created successfully";
+                return RedirectToAction("Index");
+            }
+
+            return View(personList.Retrieve());
+        }
+
+        //[HttpPost]
+        //public ActionResult Create()
+        //{
+        //    Person personList = new Person();
+
+        //    return View(personList.Retrieve());
+        //}
     }
 }

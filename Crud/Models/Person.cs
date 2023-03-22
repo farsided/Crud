@@ -56,13 +56,6 @@ namespace Crud.Models
 
             List<Person> persons = new List<Person>();
 
-            //persons = dt.AsEnumerable().ToList();
-            //persons = dt.AsEnumerable().Select(r => new Person()
-            //{
-
-            //   = r.Field<string>("ID"),
-            //}).ToList();
-            //int x = 0;
             foreach (DataRow obj in dt.Rows)
             {
                 persons.Add(new Person() { ID = (int)obj[0], FName = obj[1].ToString(), MName = obj[2].ToString(), LName = obj[3].ToString() });
@@ -106,6 +99,44 @@ namespace Crud.Models
                 con.Close();
             }
         }
+
+        public void Insert(Person person)
+        {
+            SqlConnection con;
+            SqlCommand cm;
+            SqlDataAdapter da;
+
+            string headerID = "ID";
+            string headerfname = "fname";
+            string headermname = "mn";
+            string headerlname = "lname";
+
+            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+
+            string cmString =
+                $"INSERT INTO {table}({headerID},{headerfname},{headermname},{headerlname}) VALUES({person.ID},{person.FName},{person.MName},{person.LName})";
+
+            try
+            {
+                con.Open();
+                Console.WriteLine("Success connection from Insert");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed connection from Insert");
+                throw e;
+            }
+            finally
+            {
+                cm = new SqlCommand(cmString);
+                da = new SqlDataAdapter(cm.CommandText, con);
+                dt = new DataTable();
+                da.Fill(dt);
+                Console.WriteLine("Fill function from Insert");
+                con.Close();
+            }
+        }
+
         public void Update(int ID, string fname, string mname, string lname)
         {
             SqlConnection con;
