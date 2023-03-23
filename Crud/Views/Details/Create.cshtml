@@ -1,8 +1,26 @@
-﻿
+﻿@model Crud.Models.Person
 @{
     ViewBag.Title = "Create";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Create</h2>
+<form>
+    <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-sm">@Html.DisplayNameFor(model => model.FName)</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-sm">@Html.DisplayNameFor(model => model.MName)</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-sm">@Html.DisplayNameFor(model => model.LName)</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    @Html.ActionLink("Save", "Index", "Details", new { @class = "btn btn-sm btn-secondary" })
+    @Html.ActionLink("Back to List", "Index", "Details", new { @class = "btn btn-sm btn-secondary" })
+    
+</form>
+
 
