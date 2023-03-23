@@ -16,11 +16,10 @@
     </div>
     <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="inputGroup-sizing-sm">@Html.DisplayNameFor(model => model.LName)</span>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        <input asp-for="" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
     </div>
-    @Html.ActionLink("Save", "Index", "Details", new { @class = "btn btn-sm btn-secondary" })
+    @Html.ActionLink("Save", "Create", "Details", new { @class = "btn btn-sm btn-secondary" })
     @Html.ActionLink("Back to List", "Index", "Details", new { @class = "btn btn-sm btn-secondary" })
-    
 </form>
 
 
