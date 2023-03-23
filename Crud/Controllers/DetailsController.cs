@@ -28,9 +28,10 @@ namespace Crud.Controllers
         [HttpPost]
         public ActionResult Create(Person person)
         {
-            Person personL = person;
-            personL.Insert(person.ID, person.FName, person.MName, person.LName);
-            return View(personL.Retrieve());
+
+            Person personL = new Person();
+            //personL.Insert(person.ID, person.FName, person.MName, person.LName);
+            return View(personL);
         }
     }
 }
