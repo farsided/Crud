@@ -63,7 +63,7 @@ namespace Crud.Models
 
             return persons;
         }
-        public void Insert(string ID, string fname, string mname, string lname)
+        public void Insert(int ID, string fname, string mname, string lname)
         {
             SqlConnection con;
             SqlCommand cm;
