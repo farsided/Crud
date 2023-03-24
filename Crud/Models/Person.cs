@@ -145,8 +145,7 @@ namespace Crud.Models
             SqlConnection con;
             SqlCommand cm;
             SqlDataAdapter da;
-
-            string headerID = "ID";
+            
             string headerfname = "fname";
             string headermname = "mn";
             string headerlname = "lname";
@@ -154,13 +153,13 @@ namespace Crud.Models
             con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
 
             string cmString =
-                $"UPDATE {table} SET {headerID}={person.ID},{headerfname}='{person.FName}',{headermname}='{person.MName}',{headerlname}='{person.LName}' WHERE ID={person.ID}";
+                $"UPDATE {table} SET {headerfname}='{person.FName}',{headermname}='{person.MName}',{headerlname}='{person.LName}' WHERE ID={person.ID}";
 
             try
             {
                 con.Open();
-                cm = new SqlCommand(cmString);
-                da = new SqlDataAdapter(cm.CommandText, con);
+                cm = new SqlCommand(cmString, con);
+                da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
             }

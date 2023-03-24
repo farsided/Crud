@@ -51,8 +51,8 @@ namespace Crud.Controllers
         [HttpPost]
         public ActionResult Edit(Person person)
         {
-            Person person = new Person();
-            return View(person.Retrieve(ID));
+            person.Update(person);
+            return View(person);
         }
     }
 }
