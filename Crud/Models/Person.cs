@@ -6,6 +6,8 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 
+
+
 namespace Crud.Models
 {
     public class Person
@@ -37,8 +39,8 @@ namespace Crud.Models
             try
             {
                 con.Open();
-                cm = new SqlCommand(cmString);
-                da = new SqlDataAdapter(cm.CommandText, con);
+                cm = new SqlCommand(cmString, con);
+                da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
             }
@@ -63,41 +65,46 @@ namespace Crud.Models
 
             return persons;
         }
-        public void Insert(int ID, string fname, string mname, string lname)
+
+        public Person Retrieve(int ID)
         {
             SqlConnection con;
             SqlCommand cm;
             SqlDataAdapter da;
 
-            string headerID = "ID";
-            string headerfname = "fname";
-            string headermname = "mn";
-            string headerlname = "lname";
-
+            string cmString = $"SELECT * FROM {table} WHERE ID = {ID}";
             con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
-
-            string cmString =
-                $"INSERT INTO {table}({headerID},{headerfname},{headermname},{headerlname}) VALUES({ID},{fname},{mname},{lname})";
-
             try
             {
                 con.Open();
-                Console.WriteLine("Success connection from Insert");
+                cm = new SqlCommand(cmString, con);
+                da = new SqlDataAdapter(cm);
+                dt = new DataTable();
+                da.Fill(dt);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed connection from Insert");
                 throw e;
             }
             finally
             {
-                cm = new SqlCommand(cmString);
-                da = new SqlDataAdapter(cm.CommandText, con);
-                dt = new DataTable();
-                da.Fill(dt);
-                Console.WriteLine("Fill function from Insert");
-                con.Close();
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
+
+            Person person = new Person();
+
+            foreach (DataRow r in dt.Rows)
+            {
+                person.ID = (int)r["ID"];
+                person.FName = (string)r["fname"];
+                person.MName = (string)r["mn"];
+                person.LName = (string)r["lname"];
+            }
+
+            return person;
         }
 
         public void Insert(Person person)
@@ -105,8 +112,7 @@ namespace Crud.Models
             SqlConnection con;
             SqlCommand cm;
             SqlDataAdapter da;
-
-            string headerID = "ID";
+            
             string headerfname = "fname";
             string headermname = "mn";
             string headerlname = "lname";
@@ -114,30 +120,27 @@ namespace Crud.Models
             con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
 
             string cmString =
-                $"INSERT INTO {table}({headerID},{headerfname},{headermname},{headerlname}) VALUES({person.ID},{person.FName},{person.MName},{person.LName})";
+                $"INSERT INTO {table} ({headerfname},{headermname},{headerlname}) VALUES ('{person.FName}','{person.MName}','{person.LName}')";
 
             try
             {
                 con.Open();
-                Console.WriteLine("Success connection from Insert");
+                cm = new SqlCommand(cmString, con);
+                da = new SqlDataAdapter(cm);
+                dt = new DataTable();
+                da.Fill(dt);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed connection from Insert");
                 throw e;
             }
             finally
             {
-                cm = new SqlCommand(cmString);
-                da = new SqlDataAdapter(cm.CommandText, con);
-                dt = new DataTable();
-                da.Fill(dt);
-                Console.WriteLine("Fill function from Insert");
                 con.Close();
             }
         }
 
-        public void Update(int ID, string fname, string mname, string lname)
+        public void Update(Person person)
         {
             SqlConnection con;
             SqlCommand cm;
@@ -151,25 +154,22 @@ namespace Crud.Models
             con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
 
             string cmString =
-                $"UPDATE {table} SET {headerID}={ID},{headerfname}='{fname}',{headermname}='{mname}',{headerlname}='{lname}' WHERE ID={ID}";
+                $"UPDATE {table} SET {headerID}={person.ID},{headerfname}='{person.FName}',{headermname}='{person.MName}',{headerlname}='{person.LName}' WHERE ID={person.ID}";
 
             try
             {
                 con.Open();
-                Console.WriteLine("Success connection from Update");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed connection from Update");
-                throw e;
-            }
-            finally
-            {
                 cm = new SqlCommand(cmString);
                 da = new SqlDataAdapter(cm.CommandText, con);
                 dt = new DataTable();
                 da.Fill(dt);
-                Console.WriteLine("Fill function from Update");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
                 con.Close();
             }
         }
@@ -186,20 +186,17 @@ namespace Crud.Models
             try
             {
                 con.Open();
-                Console.WriteLine("Success connection from Delete");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed connection from Delete");
-                throw e;
-            }
-            finally
-            {
                 cm = new SqlCommand(cmString);
                 da = new SqlDataAdapter(cm.CommandText, con);
                 dt = new DataTable();
                 da.Fill(dt);
-                Console.WriteLine("Fill function from Delete");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
                 con.Close();
             }
         }

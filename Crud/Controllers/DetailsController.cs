@@ -28,10 +28,31 @@ namespace Crud.Controllers
         [HttpPost]
         public ActionResult Create(Person person)
         {
-
             Person personL = new Person();
-            //personL.Insert(person.ID, person.FName, person.MName, person.LName);
+
+            if (ModelState.IsValid)
+            {
+                personL.Insert(person);
+                return RedirectToAction("Index");
+                
+            }
+            
             return View(personL);
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int ID)
+        {
+            Person person = new Person();
+            return View(person.Retrieve(ID));
+            //return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Person person)
+        {
+            Person person = new Person();
+            return View(person.Retrieve(ID));
         }
     }
 }
