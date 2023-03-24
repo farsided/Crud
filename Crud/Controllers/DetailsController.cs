@@ -54,5 +54,20 @@ namespace Crud.Controllers
             person.Update(person);
             return View(person);
         }
+
+        [HttpGet]
+        public ActionResult Delete(int ID)
+        {
+            Person person = new Person();
+            return View(person.Retrieve(ID));
+            //return View();
+        }
+
+        [HttpPost]
+        public ActionResult Delete(Person person)
+        {
+            person.Delete(person.ID);
+            return View(person);
+        }
     }
 }
