@@ -30,8 +30,8 @@ namespace Crud.Controllers
         {
 
             Person personL = new Person();
-            //personL.Insert(person.ID, person.FName, person.MName, person.LName);
-            return View(personL);
+            personL.Insert(person.ID, person.FName, person.MName, person.LName);
+            return RedirectToAction("Index");
         }
     }
 }

@@ -15,11 +15,12 @@ namespace Crud.Models
         public string MName { get; set; }
         public string LName { get; set; }
 
-        string server = @"192.168.0.101\sqlExpress";
+        string server = @"(localdb)\MSSQLLocalDB"; //@"192.168.0.101\sqlExpress";
         string dataBase = "dbsample";
         string user = "SA";
         string password = "1234";
         string table = "tbl_sample";
+        bool integratedSecurity = true;
         DataTable dt;
         public Person()
         {
@@ -33,7 +34,7 @@ namespace Crud.Models
             SqlDataAdapter da;
 
             string cmString = $"SELECT * FROM {table}";
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};INTEGRATED SECURITY={integratedSecurity};"); //USER={user};PWD={password}");
             try
             {
                 con.Open();
@@ -74,28 +75,29 @@ namespace Crud.Models
             string headermname = "mn";
             string headerlname = "lname";
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};INTEGRATED SECURITY={integratedSecurity};"); //USER={user};PWD={password}");
 
             string cmString =
-                $"INSERT INTO {table}({headerID},{headerfname},{headermname},{headerlname}) VALUES({ID},{fname},{mname},{lname})";
+                $"SET IDENTITY_INSERT {table} ON; INSERT INTO {table}({headerID},{headerfname},{headermname},{headerlname}) VALUES({ID},'{fname}','{mname}','{lname}')";
+
+            
 
             try
             {
                 con.Open();
-                Console.WriteLine("Success connection from Insert");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed connection from Insert");
-                throw e;
-            }
-            finally
-            {
                 cm = new SqlCommand(cmString);
                 da = new SqlDataAdapter(cm.CommandText, con);
                 dt = new DataTable();
                 da.Fill(dt);
-                Console.WriteLine("Fill function from Insert");
+            }
+            catch (Exception e)
+            {
+
+                //throw e;
+            }
+            finally
+            {
+                
                 con.Close();
             }
         }
@@ -111,7 +113,7 @@ namespace Crud.Models
             string headermname = "mn";
             string headerlname = "lname";
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};INTEGRATED SECURITY={integratedSecurity};"); //USER={user};PWD={password}");
 
             string cmString =
                 $"INSERT INTO {table}({headerID},{headerfname},{headermname},{headerlname}) VALUES({person.ID},{person.FName},{person.MName},{person.LName})";
