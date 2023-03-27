@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define HOME
+//#define WORK
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,11 +18,16 @@ namespace Crud.Models
         public string FName { get; set; }
         public string MName { get; set; }
         public string LName { get; set; }
-
+#if HOME
+        string server = @"(localdb)\MSSQLLocalDB";
+        bool integratedSecurity = true;
+#elif WORK
         string server = @"192.168.0.101\sqlExpress";
-        string dataBase = "dbsample";
         string user = "SA";
         string password = "1234";
+#else
+#endif
+        string dataBase = "dbsample";
         string table = "tbl_sample";
         DataTable dt;
         public Person()
@@ -45,7 +52,14 @@ namespace Crud.Models
                 cmString = $"SELECT * FROM {table} WHERE CONCAT(fname, mn, lname) LIKE '%{searchItem}%'";
             }
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                $";USER={user};PWD={password}");
+                #else
+                #endif
+
             try
             {
                 con.Open();
@@ -83,7 +97,15 @@ namespace Crud.Models
             SqlDataAdapter da;
 
             string cmString = $"SELECT * FROM {table} WHERE ID = {ID}";
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                $";USER={user};PWD={password}");
+                #else
+                #endif
+
             try
             {
                 con.Open();
@@ -127,7 +149,13 @@ namespace Crud.Models
             string headermname = "mn";
             string headerlname = "lname";
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                $";USER={user};PWD={password}");
+                #else
+                #endif
 
             string cmString =
                 $"INSERT INTO {table} ({headerfname},{headermname},{headerlname}) VALUES ('{person.FName}','{person.MName}','{person.LName}')";
@@ -160,7 +188,13 @@ namespace Crud.Models
             string headermname = "mn";
             string headerlname = "lname";
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                $";USER={user};PWD={password}");
+                #else
+                #endif
 
             string cmString =
                 $"UPDATE {table} SET {headerfname}='{person.FName}',{headermname}='{person.MName}',{headerlname}='{person.LName}' WHERE ID={person.ID}";
@@ -188,7 +222,13 @@ namespace Crud.Models
             SqlCommand cm;
             SqlDataAdapter da;
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                $";USER={user};PWD={password}");
+                #else
+                #endif
 
             string cmString = $"DELETE FROM {table} WHERE ID={ID}";
 
