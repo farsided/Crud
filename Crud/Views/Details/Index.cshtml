@@ -1,13 +1,23 @@
 ﻿@model IEnumerable<Crud.Models.Person>
 
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
+@*<select class="select" data-mdb-filter="true">*@
+@using (Html.BeginForm("Index", "Details", FormMethod.Get))
+{
+    //note:searchItem must match the parameter name
+    @Html.TextBox("searchItem", "", new {@class="form-control", type="search" })
+    <input type="submit" class="btn btn-secondary" value="Search" />  
+}
+
+
 <p>
-    @Html.ActionLink("Create New", "Create", "", new {@class = "btn btn-warning"})
+    @Html.ActionLink("Create New", "Create", "", new {@class = "btn btn-warning mb-5"})
 </p>
 <table class="table">
     <tr>
@@ -36,7 +46,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { item.ID }, new {@class = "btn btn-sm btn-success"}) |
-            @Html.ActionLink("Details", "Detail,s", new { id=item.ID }, new { @class = "btn btn-sm btn-secondary" }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }, new { @class = "btn btn-sm btn-secondary" }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID }, new { @class = "btn btn-sm btn-danger" })
         </td>
     </tr>

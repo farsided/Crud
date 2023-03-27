@@ -28,13 +28,23 @@ namespace Crud.Models
 
         }
 
-        public List<Person> Retrieve()
+        public List<Person> Retrieve(string searchItem="")
         {
             SqlConnection con;
             SqlCommand cm;
             SqlDataAdapter da;
 
-            string cmString = $"SELECT * FROM {table}";
+            string cmString;
+
+            if (string.IsNullOrEmpty(searchItem))
+            {
+                cmString = $"SELECT * FROM {table}";
+            }
+            else
+            {
+                cmString = $"SELECT * FROM {table} WHERE CONCAT(fname, mn, lname) LIKE '%{searchItem}%'";
+            }
+
             con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
             try
             {
@@ -199,5 +209,7 @@ namespace Crud.Models
                 con.Close();
             }
         }
+
+
     }
 }

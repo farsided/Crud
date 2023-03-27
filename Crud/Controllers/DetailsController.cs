@@ -12,11 +12,19 @@ namespace Crud.Controllers
     {
         // GET: Details
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string searchItem="")
         {
             Person personList = new Person();
 
-            return View(personList.Retrieve());
+            return View(personList.Retrieve(searchItem));
+        }
+
+        [HttpGet]
+        public ActionResult Search(string item)
+        {
+            Person personList = new Person();
+
+            return View(personList.Retrieve(item));
         }
 
         [HttpGet]
@@ -60,7 +68,6 @@ namespace Crud.Controllers
         {
             Person person = new Person();
             return View(person.Retrieve(ID));
-            //return View();
         }
 
         [HttpPost]
@@ -68,6 +75,13 @@ namespace Crud.Controllers
         {
             person.Delete(person.ID);
             return View(person);
+        }
+
+        [HttpGet]
+        public ActionResult Details(int ID)
+        {
+            Person person = new Person();
+            return View(person.Retrieve(ID));
         }
     }
 }
