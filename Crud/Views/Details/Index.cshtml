@@ -11,15 +11,15 @@
 @using (Html.BeginForm("Index", "Details", FormMethod.Get))
 {
     //note:searchItem must match the parameter name
-    @Html.TextBox("searchItem", "", new {@class="form-control", type="search" })
-    <input type="submit" class="btn btn-secondary" value="Search" />  
+    @Html.TextBox("searchItem", "", new { @class = "form-control", type = "search", placeholder = "search", title = "none", display = "inline-block" })
+    <input type="submit" class="btn btn-secondary" value="Search" display="inline-block"/>
 }
 
 
 <p>
     @Html.ActionLink("Create New", "Create", "", new {@class = "btn btn-warning mb-5"})
 </p>
-<table class="table">
+<table class="table table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.FName)
@@ -53,3 +53,9 @@
 }
 
 </table>
+
+<style>
+    #searchItem {
+        display: inline-block;
+    }
+</style>
