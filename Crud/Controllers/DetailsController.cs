@@ -60,6 +60,10 @@ namespace Crud.Controllers
         public ActionResult Edit(Person person)
         {
             person.Update(person);
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
             return View(person);
         }
 
@@ -74,6 +78,10 @@ namespace Crud.Controllers
         public ActionResult Delete(Person person)
         {
             person.Delete(person.ID);
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
             return View(person);
         }
 

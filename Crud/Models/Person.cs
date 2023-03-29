@@ -158,7 +158,7 @@ namespace Crud.Models
                 #endif
 
             string cmString =
-                $"INSERT INTO {table} ({headerfname},{headermname},{headerlname}) VALUES ('{person.FName}','{person.MName}','{person.LName}')";
+                $@"INSERT INTO {table} ({headerfname},{headermname},{headerlname}) VALUES ('{person.FName}','{person.MName}','{person.LName}')";
 
             try
             {
