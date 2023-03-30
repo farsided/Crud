@@ -143,7 +143,7 @@ namespace Crud.Models
                 person.ID = (int)r["ID"];
                 person.FName = (string)r["fname"];
                 if (!string.IsNullOrEmpty(person.MName)) {
-                person.MName = (string)r["mn"];
+                    person.MName = (string)r["mn"];
                 }
                 person.LName = (string)r["lname"];
             }
@@ -156,7 +156,7 @@ namespace Crud.Models
             SqlConnection con;
             SqlCommand cm;
             SqlDataAdapter da;
-            
+
             string headerfname = "fname";
             string headermname = "mn";
             string headerlname = "lname";
@@ -164,10 +164,10 @@ namespace Crud.Models
             con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
                 #if HOME
                     $"INTEGRATED SECURITY={integratedSecurity};");
-                #elif WORK
-                $";USER={user};PWD={password}");
-                #else
-                #endif
+#elif WORK
+                        $";USER={user};PWD={password}");
+#else
+#endif
 
             string cmString =
                 $@"INSERT INTO {table} ({headerfname},";
@@ -210,7 +210,7 @@ namespace Crud.Models
             SqlConnection con;
             SqlCommand cm;
             SqlDataAdapter da;
-            
+
             string headerfname = "fname";
             string headermname = "mn";
             string headerlname = "lname";
@@ -219,7 +219,7 @@ namespace Crud.Models
                 #if HOME
                     $"INTEGRATED SECURITY={integratedSecurity};");
                 #elif WORK
-                $";USER={user};PWD={password}");
+                    $";USER={user};PWD={password}");
                 #else
                 #endif
 
