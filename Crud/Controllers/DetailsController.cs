@@ -78,11 +78,7 @@ namespace Crud.Controllers
         public ActionResult Delete(Person person)
         {
             person.Delete(person.ID);
-            if (ModelState.IsValid)
-            {
-                return RedirectToAction("Index");
-            }
-            return View(person);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
