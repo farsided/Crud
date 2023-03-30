@@ -260,6 +260,11 @@ namespace Crud.Models
             }
         }
 
+        public string GetFullName() {
+
+            return (FName + " " + ( (string.IsNullOrWhiteSpace(MName)) ? "" : MName + " ") + LName );
+
+        }
 
     }
 }
