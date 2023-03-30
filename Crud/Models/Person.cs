@@ -7,6 +7,7 @@ using System.Web;
 
 using System.Data.SqlClient;
 using System.Data;
+using System.ComponentModel.DataAnnotations;
 
 
 
@@ -14,9 +15,18 @@ namespace Crud.Models
 {
     public class Person
     {
+        [Key]
         public int ID { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
         public string FName { get; set; }
+
+        [Display(Name = "Middle Name")]
         public string MName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
         public string LName { get; set; }
 #if HOME
         string server = @"(localdb)\MSSQLLocalDB";
