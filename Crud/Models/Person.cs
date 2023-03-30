@@ -142,7 +142,9 @@ namespace Crud.Models
             {
                 person.ID = (int)r["ID"];
                 person.FName = (string)r["fname"];
+                if (!string.IsNullOrEmpty(person.MName)) {
                 person.MName = (string)r["mn"];
+                }
                 person.LName = (string)r["lname"];
             }
 
@@ -168,12 +170,27 @@ namespace Crud.Models
                 #endif
 
             string cmString =
-                $@"INSERT INTO {table} ({headerfname},{headermname},{headerlname}) VALUES ('{person.FName}','{person.MName}','{person.LName}')";
+                $@"INSERT INTO {table} ({headerfname},";
+                if (!string.IsNullOrEmpty(person.MName)) {
+                    cmString += $"{headermname},";
+                }
+                cmString += $"{headerlname}) VALUES (@FName, ";
+                if (!string.IsNullOrEmpty(person.MName))
+                {
+                    cmString += $"@MName,";
+                }
+                cmString += $"@LName)";
 
             try
             {
                 con.Open();
                 cm = new SqlCommand(cmString, con);
+                cm.Parameters.Add("@FName", SqlDbType.VarChar).Value = person.FName;
+                if (!string.IsNullOrEmpty(person.MName))
+                {
+                    cm.Parameters.Add("@MName", SqlDbType.NVarChar).Value = person.MName;
+                }
+                cm.Parameters.Add("@LName", SqlDbType.VarChar).Value = person.LName;
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
@@ -207,12 +224,25 @@ namespace Crud.Models
                 #endif
 
             string cmString =
-                $"UPDATE {table} SET {headerfname}='{person.FName}',{headermname}='{person.MName}',{headerlname}='{person.LName}' WHERE ID={person.ID}";
+                $"UPDATE {table} SET {headerfname}=@FName,{headerlname}=@LName";
+                if (!string.IsNullOrEmpty(person.MName))
+                {
+                    cmString += $",{headermname}=@MName";
+                }
+                cmString += $" WHERE ID={person.ID}";
 
             try
             {
                 con.Open();
                 cm = new SqlCommand(cmString, con);
+                cm.Parameters.AddWithValue("@FName", person.FName);
+                if (!string.IsNullOrEmpty(person.MName))
+                {
+                    cm.Parameters.Add("@MName", SqlDbType.NVarChar);
+                    cm.Parameters["@MName"].Value = person.MName;
+                }
+                cm.Parameters.AddWithValue("@LName", person.LName);
+                cm.Parameters.AddWithValue("@ID", person.ID);
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
