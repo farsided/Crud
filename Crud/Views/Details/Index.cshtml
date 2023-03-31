@@ -5,19 +5,22 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
 @*<select class="select" data-mdb-filter="true">*@
-@using (Html.BeginForm("Index", "Details", FormMethod.Get))
-{
-    //note:searchItem must match the parameter name
-    @Html.TextBox("searchItem", "", new { @class = "form-control", type = "search", placeholder = "search", title = "none", display = "inline-block" })
-    <input type="submit" class="btn btn-secondary" value="Search" display="inline-block"/>
-}
+<nav class="bd-subnavbar py-2" aria-label="Secondary navigation">
+    <h2>Index</h2>
+    @using (Html.BeginForm("Index", "Details", FormMethod.Get))
+    {
+        //note:searchItem must match the parameter name
+        @Html.TextBox("searchItem", "", new { @class = "form-control", type = "search", placeholder = "search", title = "none", display = "inline-block" })
+        <input type="submit" class="btn btn-secondary" value="Search" display="inline-block" />
+    }
+</nav>
+
 
 
 <p>
-    @Html.ActionLink("Create New", "Create", "", new {@class = "btn btn-warning mb-5"})
+    @Html.ActionLink("Create New", "Create", "", new {@class = "btn btn-warning mb-5 mt-1"})
 </p>
 <table class="table table-hover">
     <tr>
@@ -57,5 +60,41 @@
 <style>
     #searchItem {
         display: inline-block;
+        vertical-align: middle;
     }
+
+    .bd-subnavbar {
+        position: relative;
+        z-index: 1020;
+        background-color: rgba(255,255,255,0.95);
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05),inset 0 -1px 0 rgba(0,0,0,0.15);
+    }
+
+    .bd-subnavbar {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    .bd-navbar {
+        padding: .75rem 0;
+    }
+
+    .navbar {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+    }
+
+    .navbar-expand-md {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
+
+    
+
 </style>
