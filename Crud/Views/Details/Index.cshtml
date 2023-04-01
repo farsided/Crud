@@ -24,6 +24,28 @@
         });
     });
 
+    $(function () {
+        function refreshPersonTable() {
+            $.ajax({
+                url: '@Url.Action("Search", "Details")',
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    $('#tableDiv').html(result);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        // Call refreshPersonTable function initially
+        refreshPersonTable();
+
+        // Call refreshPersonTable function every 0.5 seconds
+        setInterval(refreshPersonTable, 500);
+    });
+
 </script>
 
 <nav class="bd-subnavbar py-2" aria-label="Secondary navigation">
