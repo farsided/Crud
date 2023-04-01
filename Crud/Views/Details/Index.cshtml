@@ -7,7 +7,7 @@
 
 <script>
     $(function () {
-        $('#searchInput').on('keyup', function () {
+        $('#searchItem').on('keyup', function () {
             var searchItem = $(this).val();
 
             $.ajax({
@@ -31,7 +31,7 @@
     @using (Html.BeginForm("Index", "Details", FormMethod.Get))
     {
         //note:searchItem must match the parameter name
-        @Html.TextBox("searchItem", "", new { @class = "form-control", type = "search", placeholder = "Search", title = "none", display = "inline-block", id = "searchInput" })
+        @Html.TextBox("searchItem", "", new { @class = "form-control", type = "search", placeholder = "Search", title = "none", display = "inline-block", id = "searchItem" })
         <input type="submit" class="btn btn-secondary" value="Search" display="inline-block" />
     }
 </nav>
