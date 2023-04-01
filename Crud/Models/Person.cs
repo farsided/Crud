@@ -74,7 +74,10 @@ namespace Crud.Models
             {
                 con.Open();
                 cm = new SqlCommand(cmString, con);
+                if (!string.IsNullOrEmpty(searchItem))
+                {
                 cm.Parameters.AddWithValue("@searchItem", searchItem);
+                }
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
