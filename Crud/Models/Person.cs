@@ -74,6 +74,7 @@ namespace Crud.Models
             {
                 con.Open();
                 cm = new SqlCommand(cmString, con);
+                cm.Parameters.AddWithValue("@searchItem", searchItem);
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
@@ -94,7 +95,7 @@ namespace Crud.Models
 
             foreach (DataRow obj in dt.Rows)
             {
-                persons.Add(new Person() { ID = (int)obj[0], FName = obj[1].ToString(), MName = obj[2].ToString(), LName = obj[3].ToString() });
+                persons.Add(new Person() { ID = (int)obj["ID"], FName = obj["fname"].ToString(), MName = obj["mn"].ToString(), LName = obj["lname"].ToString() });
             }
 
             return persons;
