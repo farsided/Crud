@@ -24,7 +24,7 @@ namespace Crud.Controllers
         {
             Person personList = new Person();
 
-            return View(personList.Retrieve(item));
+            return PartialView("_PersonTable", personList.Retrieve(item));
         }
 
         [HttpGet]

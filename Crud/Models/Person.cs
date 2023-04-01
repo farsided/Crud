@@ -59,7 +59,7 @@ namespace Crud.Models
             }
             else
             {
-                cmString = $"SELECT * FROM {table} WHERE CONCAT(fname, mn, lname) LIKE '%{searchItem}%'";
+                cmString = $"SELECT * FROM {table} WHERE CONCAT(fname, mn, lname) LIKE '%'+@searchItem+'%'";
             }
 
             con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +

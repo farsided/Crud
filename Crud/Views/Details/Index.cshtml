@@ -5,14 +5,33 @@
     ViewBag.Title = "Index";
 }
 
+<script>
+    $(function () {
+        $('#searchInput').on('keyup', function () {
+            var searchItem = $(this).val();
 
-@*<select class="select" data-mdb-filter="true">*@
+            $.ajax({
+                url: '/Details/Search',
+                type: 'GET',
+                data: { item: searchItem },
+                success: function (data) {
+                    $('#tableDiv').html(data);
+                },
+                error: function () {
+                    alert('An error occurred while fetching the data.');
+                }
+            });
+        });
+    });
+
+</script>
+
 <nav class="bd-subnavbar py-2" aria-label="Secondary navigation">
     <h2>Index</h2>
     @using (Html.BeginForm("Index", "Details", FormMethod.Get))
     {
         //note:searchItem must match the parameter name
-        @Html.TextBox("searchItem", "", new { @class = "form-control", type = "search", placeholder = "search", title = "none", display = "inline-block" })
+        @Html.TextBox("searchItem", "", new { @class = "form-control", type = "search", placeholder = "Search", title = "none", display = "inline-block", id = "searchInput" })
         <input type="submit" class="btn btn-secondary" value="Search" display="inline-block" />
     }
 </nav>
@@ -22,37 +41,6 @@
 <p>
     @Html.ActionLink("Create New", "Create", "", new {@class = "btn btn-warning mb-5 mt-1"})
 </p>
-<table class="table table-hover">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }, new {@class = "btn btn-sm btn-success"}) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }, new { @class = "btn btn-sm btn-secondary" }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID }, new { @class = "btn btn-sm btn-danger" })
-        </td>
-    </tr>
-}
-
-</table>
+<div id="tableDiv">
+    @Html.Partial("_PersonTable", Model)
+</div>
