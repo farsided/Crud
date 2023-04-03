@@ -6,15 +6,25 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 
+using System.ComponentModel.DataAnnotations;    //for attributes
 
 
 namespace Crud.Models
 {
     public class Person
     {
+        [Key]
         public int ID { get; set; }
+
+        [Display(Name = "First Name")]
+        [Required]
         public string FName { get; set; }
+
+        [Display(Name = "Middle Name")]
         public string MName { get; set; }
+
+        [Display(Name = "First Name")]
+        [Required]
         public string LName { get; set; }
 
         string server = @"192.168.0.101\sqlExpress";
