@@ -77,9 +77,18 @@ namespace Crud.Areas.Contacts.Models
                 {
                     ID = Convert.ToInt32(r["ID"]), 
                     EID = Convert.ToInt32(r["EID"]),
-
+                    NetworkNo = Convert.ToString(r["NetworkNo"]),
+                    NetworkTypeID = Convert.ToInt32(r["NetworkTypeID"]),
+                    BinCard = Convert.ToString(r["BinCard"]),
+                    Remarks = Convert.ToString(r["Remarks"]),
+                    EncBy = Convert.ToInt32(r["EncBy"]),
+                    LastModifiedBy = Convert.ToInt32(r["LastModifiedBy"]),
+                    LastModifiedDate = Convert.ToDateTime(r["LastModifiedDate"]),
+                    EncDate = Convert.ToDateTime(r["EncDate"])
                 });
             }
+
+
             return list;
         }
     }
