@@ -81,6 +81,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PMSRedirect">
+      <HintPath>..\..\..\..\..\Documents\pmsredirect\PMSRedirect.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
