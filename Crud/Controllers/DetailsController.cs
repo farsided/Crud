@@ -24,7 +24,7 @@ namespace Crud.Controllers
         {
             Person personList = new Person();
 
-            return View(personList.Retrieve(item));
+            return PartialView("_PersonTable", personList.Retrieve(item));
         }
 
         [HttpGet]
@@ -60,6 +60,10 @@ namespace Crud.Controllers
         public ActionResult Edit(Person person)
         {
             person.Update(person);
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
             return View(person);
         }
 
@@ -74,7 +78,7 @@ namespace Crud.Controllers
         public ActionResult Delete(Person person)
         {
             person.Delete(person.ID);
-            return View(person);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

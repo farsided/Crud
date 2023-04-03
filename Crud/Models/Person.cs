@@ -1,12 +1,14 @@
-﻿using System;
+﻿#define HOME
+//#define WORK
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 using System.Data.SqlClient;
 using System.Data;
+using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;    //for attributes
 
 
 namespace Crud.Models
@@ -16,21 +18,26 @@ namespace Crud.Models
         [Key]
         public int ID { get; set; }
 
-        [Display(Name = "First Name")]
         [Required]
+        [Display(Name = "First Name")]
         public string FName { get; set; }
 
         [Display(Name = "Middle Name")]
         public string MName { get; set; }
 
-        [Display(Name = "First Name")]
         [Required]
+        [Display(Name = "Last Name")]
         public string LName { get; set; }
-
+#if HOME
+        string server = @"(localdb)\MSSQLLocalDB";
+        bool integratedSecurity = true;
+#elif WORK
         string server = @"192.168.0.101\sqlExpress";
-        string dataBase = "dbsample";
         string user = "SA";
         string password = "1234";
+#else
+#endif
+        string dataBase = "dbsample";
         string table = "tbl_sample";
         DataTable dt;
         public Person()
@@ -52,14 +59,25 @@ namespace Crud.Models
             }
             else
             {
-                cmString = $"SELECT * FROM {table} WHERE CONCAT(fname, mn, lname) LIKE '%{searchItem}%'";
+                cmString = $"SELECT * FROM {table} WHERE CONCAT(fname, mn, lname) LIKE '%'+@searchItem+'%'";
             }
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                $";USER={user};PWD={password}");
+                #else
+                #endif
+
             try
             {
                 con.Open();
                 cm = new SqlCommand(cmString, con);
+                if (!string.IsNullOrEmpty(searchItem))
+                {
+                cm.Parameters.AddWithValue("@searchItem", searchItem);
+                }
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
@@ -80,7 +98,7 @@ namespace Crud.Models
 
             foreach (DataRow obj in dt.Rows)
             {
-                persons.Add(new Person() { ID = (int)obj[0], FName = obj[1].ToString(), MName = obj[2].ToString(), LName = obj[3].ToString() });
+                persons.Add(new Person() { ID = (int)obj["ID"], FName = obj["fname"].ToString(), MName = obj["mn"].ToString(), LName = obj["lname"].ToString() });
             }
 
             return persons;
@@ -93,7 +111,15 @@ namespace Crud.Models
             SqlDataAdapter da;
 
             string cmString = $"SELECT * FROM {table} WHERE ID = {ID}";
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                $";USER={user};PWD={password}");
+                #else
+                #endif
+
             try
             {
                 con.Open();
@@ -120,7 +146,9 @@ namespace Crud.Models
             {
                 person.ID = (int)r["ID"];
                 person.FName = (string)r["fname"];
-                person.MName = (string)r["mn"];
+                if (!string.IsNullOrEmpty(person.MName)) {
+                    person.MName = (string)r["mn"];
+                }
                 person.LName = (string)r["lname"];
             }
 
@@ -132,20 +160,41 @@ namespace Crud.Models
             SqlConnection con;
             SqlCommand cm;
             SqlDataAdapter da;
-            
+
             string headerfname = "fname";
             string headermname = "mn";
             string headerlname = "lname";
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+#elif WORK
+                        $";USER={user};PWD={password}");
+#else
+#endif
 
             string cmString =
-                $"INSERT INTO {table} ({headerfname},{headermname},{headerlname}) VALUES ('{person.FName}','{person.MName}','{person.LName}')";
+                $@"INSERT INTO {table} ({headerfname},";
+                if (!string.IsNullOrEmpty(person.MName)) {
+                    cmString += $"{headermname},";
+                }
+                cmString += $"{headerlname}) VALUES (@FName, ";
+                if (!string.IsNullOrEmpty(person.MName))
+                {
+                    cmString += $"@MName,";
+                }
+                cmString += $"@LName)";
 
             try
             {
                 con.Open();
                 cm = new SqlCommand(cmString, con);
+                cm.Parameters.Add("@FName", SqlDbType.VarChar).Value = person.FName;
+                if (!string.IsNullOrEmpty(person.MName))
+                {
+                    cm.Parameters.Add("@MName", SqlDbType.NVarChar).Value = person.MName;
+                }
+                cm.Parameters.Add("@LName", SqlDbType.VarChar).Value = person.LName;
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
@@ -165,20 +214,39 @@ namespace Crud.Models
             SqlConnection con;
             SqlCommand cm;
             SqlDataAdapter da;
-            
+
             string headerfname = "fname";
             string headermname = "mn";
             string headerlname = "lname";
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                    $";USER={user};PWD={password}");
+                #else
+                #endif
 
             string cmString =
-                $"UPDATE {table} SET {headerfname}='{person.FName}',{headermname}='{person.MName}',{headerlname}='{person.LName}' WHERE ID={person.ID}";
+                $"UPDATE {table} SET {headerfname}=@FName,{headerlname}=@LName";
+                if (!string.IsNullOrEmpty(person.MName))
+                {
+                    cmString += $",{headermname}=@MName";
+                }
+                cmString += $" WHERE ID={person.ID}";
 
             try
             {
                 con.Open();
                 cm = new SqlCommand(cmString, con);
+                cm.Parameters.AddWithValue("@FName", person.FName);
+                if (!string.IsNullOrEmpty(person.MName))
+                {
+                    cm.Parameters.Add("@MName", SqlDbType.NVarChar);
+                    cm.Parameters["@MName"].Value = person.MName;
+                }
+                cm.Parameters.AddWithValue("@LName", person.LName);
+                cm.Parameters.AddWithValue("@ID", person.ID);
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
@@ -198,7 +266,13 @@ namespace Crud.Models
             SqlCommand cm;
             SqlDataAdapter da;
 
-            con = new SqlConnection($"SERVER={server};DATABASE={dataBase};USER={user};PWD={password}");
+            con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
+                #if HOME
+                    $"INTEGRATED SECURITY={integratedSecurity};");
+                #elif WORK
+                $";USER={user};PWD={password}");
+                #else
+                #endif
 
             string cmString = $"DELETE FROM {table} WHERE ID={ID}";
 
@@ -220,6 +294,11 @@ namespace Crud.Models
             }
         }
 
+        public string GetFullName() {
+
+            return (FName + " " + ( (string.IsNullOrWhiteSpace(MName)) ? "" : MName + " ") + LName );
+
+        }
 
     }
 }

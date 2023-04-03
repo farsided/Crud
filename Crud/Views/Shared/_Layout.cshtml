@@ -6,37 +6,59 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    <style>
+        body {
+            padding-top: 0px;
+            padding-bottom: 20px;
+        }
+
+        #searchItem {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .bd-subnavbar {
+            position: relative;
+            z-index: 1020;
+            background-color: rgba(255,255,255,0.95);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05),inset 0 -1px 0 rgba(0,0,0,0.15);
+        }
+
+        .bd-subnavbar {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+        }
+
+        .bd-navbar {
+            padding: .75rem 0;
+        }
+
+        .navbar {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+        }
+
+        .navbar-expand-md {
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+        }
+    </style>
 </head>
 <body>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new {@class = "navbar-brand"})
+            @Html.ActionLink("Information System", "Index", "Home", new { area = "" }, new {@class = "navbar-brand navbar navbar-expand-md navbar-dark bd-navbar" })
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -51,7 +73,7 @@
         </div>
     </nav>
 
-    <div class="container mt-5 body-content">
+    <div class="container mt-3 body-content">
         @RenderBody()
         <hr />
         <footer>
