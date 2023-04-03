@@ -5,15 +5,26 @@
     ViewBag.Title = "Index";
 }
 
-<script>
-    $(function () {
-        $('#searchItem').on('keyup', function () {
-            var searchItem = $(this).val();
+<div id="tableDiv">
+</div>
 
+@section scripts{
+    <script>
+        LoadData("");
+        $('#searchItem').on('keyup', function () {
+        var searchItem = $(this).val();
+        LoadData(searchItem);
+
+        });
+
+        $("#data").DataTable();
+
+        function LoadData(search)
+        {
             $.ajax({
-                url: '/Details/Search',
+                url: '@Url.Action("Search", "Details")',
                 type: 'GET',
-                data: { item: searchItem },
+                data: { item: search },
                 success: function (data) {
                     $('#tableDiv').html(data);
                 },
@@ -21,48 +32,8 @@
                     alert('An error occurred while fetching the data.');
                 }
             });
-        });
-    });
 
-    $(function () {
-        function refreshPersonTable() {
-            $.ajax({
-                url: '@Url.Action("Search", "Details")',
-                type: 'GET',
-                dataType: 'html',
-                success: function (result) {
-                    $('#tableDiv').html(result);
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log(xhr.responseText);
-                }
-            });
         }
 
-        // Call refreshPersonTable function initially
-        refreshPersonTable();
-
-        // Call refreshPersonTable function every 0.5 seconds
-        setInterval(refreshPersonTable, 500);
-    });
-
-</script>
-
-<nav class="bd-subnavbar py-2" aria-label="Secondary navigation">
-    <h2>Index</h2>
-    @using (Html.BeginForm("Index", "Details", FormMethod.Get))
-    {
-        //note:searchItem must match the parameter name
-        @Html.TextBox("searchItem", "", new { @class = "form-control", type = "search", placeholder = "Search", title = "none", display = "inline-block", id = "searchItem" })
-        <input type="submit" class="btn btn-secondary" value="Search" display="inline-block" />
+    </script>
     }
-</nav>
-
-
-
-<p>
-    @Html.ActionLink("Create New", "Create", "", new {@class = "btn btn-warning mb-5 mt-1"})
-</p>
-<div id="tableDiv">
-    @Html.Partial("_PersonTable", Model)
-</div>

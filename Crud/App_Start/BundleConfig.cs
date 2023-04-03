@@ -21,11 +21,16 @@ namespace Crud
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/jquery.dataTables.min.js",
+                      "~/Scripts/dataTables.bootstrap5.min.js",
+                      "~/Scripts/js/all.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/dataTables.bootstrap5.min.css",
+                      "~/Content/css/all.css"));
         }
     }
 }

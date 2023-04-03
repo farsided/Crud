@@ -1,5 +1,5 @@
-﻿#define HOME
-//#define WORK
+﻿//#define HOME
+#define WORK
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +66,7 @@ namespace Crud.Models
                 #if HOME
                     $"INTEGRATED SECURITY={integratedSecurity};");
                 #elif WORK
-                $";USER={user};PWD={password}");
+                    $"USER={user};PWD={password};");
                 #else
                 #endif
 
@@ -76,7 +76,7 @@ namespace Crud.Models
                 cm = new SqlCommand(cmString, con);
                 if (!string.IsNullOrEmpty(searchItem))
                 {
-                cm.Parameters.AddWithValue("@searchItem", searchItem);
+                    cm.Parameters.AddWithValue("@searchItem", searchItem);
                 }
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
@@ -110,13 +110,13 @@ namespace Crud.Models
             SqlCommand cm;
             SqlDataAdapter da;
 
-            string cmString = $"SELECT * FROM {table} WHERE ID = {ID}";
+            string cmString = $"SELECT * FROM {table} WHERE ID = @ID";
 
             con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
                 #if HOME
                     $"INTEGRATED SECURITY={integratedSecurity};");
                 #elif WORK
-                $";USER={user};PWD={password}");
+                    $"USER={user};PWD={password};");
                 #else
                 #endif
 
@@ -124,6 +124,7 @@ namespace Crud.Models
             {
                 con.Open();
                 cm = new SqlCommand(cmString, con);
+                cm.Parameters.Add(new SqlParameter("@ID", ID));
                 da = new SqlDataAdapter(cm);
                 dt = new DataTable();
                 da.Fill(dt);
@@ -146,9 +147,7 @@ namespace Crud.Models
             {
                 person.ID = (int)r["ID"];
                 person.FName = (string)r["fname"];
-                if (!string.IsNullOrEmpty(person.MName)) {
-                    person.MName = (string)r["mn"];
-                }
+                person.MName = Convert.ToString(r["mn"]);
                 person.LName = (string)r["lname"];
             }
 
@@ -168,10 +167,10 @@ namespace Crud.Models
             con = new SqlConnection($@"SERVER={server};DATABASE={dataBase};" +
                 #if HOME
                     $"INTEGRATED SECURITY={integratedSecurity};");
-#elif WORK
-                        $";USER={user};PWD={password}");
-#else
-#endif
+                #elif WORK
+                    $"USER={user};PWD={password};");
+                #else
+                #endif
 
             string cmString =
                 $@"INSERT INTO {table} ({headerfname},";
@@ -223,7 +222,7 @@ namespace Crud.Models
                 #if HOME
                     $"INTEGRATED SECURITY={integratedSecurity};");
                 #elif WORK
-                    $";USER={user};PWD={password}");
+                    $"USER={user};PWD={password};");
                 #else
                 #endif
 
@@ -270,7 +269,7 @@ namespace Crud.Models
                 #if HOME
                     $"INTEGRATED SECURITY={integratedSecurity};");
                 #elif WORK
-                $";USER={user};PWD={password}");
+                    $"USER={user};PWD={password};");
                 #else
                 #endif
 
