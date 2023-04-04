@@ -171,6 +171,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Contacts\PMSRedirect.dll" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -334,6 +335,7 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Areas\Contacts\Views\web.config" />
+    <Content Include="Areas\Contacts\Views\Contact\Create.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
@@ -388,7 +390,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Contacts\Views\Contact\" />
     <Folder Include="Areas\Contacts\Views\NetworkType\" />
     <Folder Include="Areas\Contacts\Views\Shared\" />
   </ItemGroup>

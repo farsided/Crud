@@ -62,7 +62,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            @Html.ActionLink("Information System", "Index", "Home", new { area = "" }, new {@class = "navbar-brand" })
+            @Html.ActionLink("Contacts", "Index", "Home", new { area = "" }, new {@class = "navbar-brand" })
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -71,7 +71,9 @@
                     <li class="nav-item">
                         @Html.ActionLink("Details", "Index", "Details","", new {@class = "nav-link"})
                     </li>
-
+                    <li class="nav-item">
+                        @Html.ActionLink("Contact", "Create", "Contact", new { area = "Contacts" }, new { @class = "nav-link" })
+                    </li>
                 </ul>
             </div>
         </div>

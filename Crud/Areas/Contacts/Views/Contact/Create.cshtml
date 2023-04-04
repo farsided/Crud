@@ -1,0 +1,58 @@
+﻿@model Crud.Areas.Contacts.Models.Contact
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title">New Data</h6>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row mb-2 g-2">
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.EID, htmlAttributes: new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.EID, new Crud.Areas.Contacts.Models.Contact().ListEmployee(), "Select Employee", new { @class = "form-select" })
+                            @Html.ValidationMessageFor(model => model.EID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.NetworkNo, htmlAttributes: new { @class = "form-label" })
+                            @Html.EditorFor(model => model.NetworkNo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NetworkNo, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.NetworkTypeID, htmlAttributes: new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.NetworkTypeID, new Crud.Areas.Contacts.Models.NetworkType().NetworkTypes(), "Select Network", new { @class = "form-select" } )
+                            @Html.ValidationMessageFor(model => model.NetworkTypeID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.BinCard, htmlAttributes: new { @class = "form-label" })
+                            @Html.EditorFor(model => model.BinCard, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BinCard, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextAreaFor(model => model.Remarks,10,5, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12">
+                            <input type="submit" name="name" value="Create" class="btn btn-primary" />
+                            @Html.ActionLink("Back to List", "Index", "", new { @class = "btn btn-secondary" })
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
