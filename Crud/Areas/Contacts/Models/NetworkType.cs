@@ -31,7 +31,7 @@ namespace Crud.Areas.Contacts.Models
                 con.Open();
                 SqlCommand cm = new SqlCommand("INSERT INTO tbl_NetworkTypes ([Name], [EncBy]) VALUES(@Name,@EncBy);", con);
                 cm.Parameters.Add(new SqlParameter("@Name", networkType.Name));
-                cm.Parameters.Add(new SqlParameter("@EncBy", networkType.EncBy));
+                cm.Parameters.Add(new SqlParameter("@EncBy", session.User.ID));
                 SqlDataAdapter da = new SqlDataAdapter(cm);
                 DataTable dt = new DataTable();
                 da.Fill(dt);

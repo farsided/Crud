@@ -336,6 +336,8 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Areas\Contacts\Views\web.config" />
     <Content Include="Areas\Contacts\Views\Contact\Create.cshtml" />
+    <Content Include="Areas\Contacts\Views\NetworkType\Create.cshtml" />
+    <Content Include="Areas\Contacts\Views\Contact\Index.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
@@ -390,7 +392,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Contacts\Views\NetworkType\" />
     <Folder Include="Areas\Contacts\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>

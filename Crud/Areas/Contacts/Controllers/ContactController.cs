@@ -9,6 +9,8 @@ namespace Crud.Areas.Contacts.Controllers
 {
     public class ContactController : Controller
     {
+        Contact mod = new Contact();
+
         // GET: Contacts/Contact
         [HttpGet]
         public ActionResult Index()
@@ -26,9 +28,9 @@ namespace Crud.Areas.Contacts.Controllers
         [HttpPost]
         public ActionResult Create(Contact contact)
         {
-            //if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Create(contact);
+                mod.Create(contact);
                 return RedirectToAction("Index");
             }
 
