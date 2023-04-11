@@ -26,25 +26,110 @@ namespace Crud.Areas.Contacts.Models
         public DateTime LastModifiedDate { get; set; }
         public DateTime EncDate { get; set; }
 
+        string table = "tbl_Contacts";
+
         public Contact() { }
+
+        Dictionary<string, object> ItemsMap;
+
+        Dictionary<string, object> Map(List<string> placeHolders, List<object> items)
+        {
+            for (int x = 0; x < placeHolders.Count; x++)
+            {
+                ItemsMap.Add(placeHolders.ElementAt(x), items.ElementAt(x));
+            }
+
+            return ItemsMap;
+        }
+
+        List<string> PlaceHolders(List<string> placeholders)
+        {
+            placeholders.ForEach( ph => 
+                {
+                    ph = PlaceHolder(ph);
+                }
+            );
+            return placeholders;
+        }
+
+        string PlaceHolder(string placeholder)
+        {
+            placeholder = "@" + placeholder;
+            return placeholder;
+        }
+
+        void MapParameters(Dictionary<string, object> items, ref SqlCommand command)
+        {
+            foreach(KeyValuePair<string, object> item in items)
+            {
+                command.Parameters.Add(new SqlParameter(PlaceHolder(item.Key), item.Value));
+            }
+        }
+
+        string InsertColumnsAndValues(List<string> columns, string table="")
+        {
+            string columnsAndValues="";
+            if (string.IsNullOrWhiteSpace(table))
+            {
+                columnsAndValues = $"INSERT INTO {table}";
+            }
+            columnsAndValues = $"{columnsAndValues} (";
+
+            foreach (string item in columns)
+            {
+                columnsAndValues += item + ",";
+            }
+            columnsAndValues.Remove(columnsAndValues.Length - 1);
+            columnsAndValues += ") VALUES (";
+            foreach (string item in columns)
+            {
+                columnsAndValues += PlaceHolder(item) + ",";
+            }
+            columnsAndValues.Remove(columnsAndValues.Length - 1);
+            columnsAndValues += ")";
+
+            return columnsAndValues;
+        }
 
         public void Create(Contact contact)
         {
+
             try
             {
+                //con.Open();
+                //SqlCommand cm = new SqlCommand("INSERT INTO tbl_Contacts (EID, NetworkNo, NetworkTypeID, BinCard, Remarks, EncBy, LastModifiedBy, LastModifiedDate) VALUES (@EID, @NetworkNo, @NetworkTypeID, @BinCard, @Remarks, @encBy, @LastModifiedBy, @LastModifiedDate)", con);
+                //cm.Parameters.Add(new SqlParameter("@EID", contact.EID));
+                //cm.Parameters.Add(new SqlParameter("@NetworkNo", contact.NetworkNo));
+                //cm.Parameters.Add(new SqlParameter("@NetworkTypeID", contact.NetworkTypeID));
+                //cm.Parameters.Add(new SqlParameter("@BinCard", contact.BinCard));
+                //cm.Parameters.Add(new SqlParameter("@Remarks", contact.Remarks));
+                //cm.Parameters.Add(new SqlParameter("@EncBy", session.User.ID));
+                //cm.Parameters.Add(new SqlParameter("@LastModifiedBy", session.User.ID));
+                //cm.Parameters.Add(new SqlParameter("@LastModifiedDate", DateTime.Now));
+                //SqlDataAdapter da = new SqlDataAdapter(cm);
+                //DataTable dt = new DataTable();
+                //da.Fill(dt);
+                //con.Close();
+
+                Dictionary<string, object> insertRange = new Dictionary<string, object>{
+                    { "EID", contact.EID },
+                    { "NetworkNo", contact.NetworkNo },
+                    { "NetworkTypeID", contact.NetworkTypeID },
+                    { "BinCard", contact.BinCard },
+                    { "Remarks", contact.Remarks },
+                    { "EncBy", session.User.ID },
+                    { "LastModifiedBy", session.User.ID },
+                    { "LastModifiedDate", DateTime.Now }
+                };
+
+                string insertQuery = InsertColumnsAndValues(insertRange.Keys.ToList(), table);
+
                 con.Open();
-                SqlCommand cm = new SqlCommand("INSERT INTO tbl_Contacts (EID, NetworkNo, NetworkTypeID, BinCard, Remarks, EncBy, LastModifiedBy, LastModifiedDate) VALUES (@EID, @NetworkNo, @NetworkTypeID, @BinCard, @Remarks, @encBy, @LastModifiedBy, @LastModifiedDate)", con);
-                cm.Parameters.Add(new SqlParameter("@EID", contact.EID));
-                cm.Parameters.Add(new SqlParameter("@NetworkNo", contact.NetworkNo));
-                cm.Parameters.Add(new SqlParameter("@NetworkTypeID", contact.NetworkTypeID));
-                cm.Parameters.Add(new SqlParameter("@BinCard", contact.BinCard));
-                cm.Parameters.Add(new SqlParameter("@Remarks", contact.Remarks));
-                cm.Parameters.Add(new SqlParameter("@EncBy", session.User.ID));
-                cm.Parameters.Add(new SqlParameter("@LastModifiedBy", session.User.ID));
-                cm.Parameters.Add(new SqlParameter("@LastModifiedDate", DateTime.Now));
-                SqlDataAdapter da = new SqlDataAdapter(cm);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+                SqlCommand command = new SqlCommand($"{insertQuery}", con);
+                MapParameters(insertRange, ref command);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+                DataTable dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
                 con.Close();
             }
             catch(Exception e)
